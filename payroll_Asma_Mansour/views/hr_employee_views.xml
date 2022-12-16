@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='lang']" position="after">
                 <field name="paiement"/>
             </xpath>
-             <xpath expr="//field[@name='identification_id']" position="attributes">
+            <xpath expr="//field[@name='identification_id']" position="attributes">
                         <attribute name="string">CIN</attribute>
             </xpath>
 
@@ -42,7 +42,8 @@
                 </div>
                 <field name="categorie"/>
                 <field name="echlon"/>
-                <field name="echelle_compute" invisible="1"/>
+                <field name="echelle_compute" invisible="0"/>
+<!--                <field name="val_compute" />-->
                 <field name="echelle"/>
                 <field name="salaire_de_base"/>
                 <field name="soumis_aux_heures_sup"/>

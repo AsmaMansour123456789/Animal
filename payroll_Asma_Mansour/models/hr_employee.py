@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _,exceptions
 from datetime import date, datetime, timedelta
 class HrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"
@@ -22,10 +22,11 @@ class HrEmployee(models.Model):
     _inherit = "hr.employee"
     _description = "Employee"
 
-    categorie = fields.Char(string='Catégorie', compute='_compute_categorie',groups="hr.group_hr_user", tracking=True)
+    categorie = fields.Char(string='Catégorie', compute='_compute_categorie', groups="hr.group_hr_user", tracking=True)
     name = fields.Char(string="Employee Name", related='resource_id.name', store=True, readonly=False, tracking=True)
-    echelle_compute = fields.Integer(string="Calcul de l'Echelle", required=False, tracking=True)
-    echelle = fields.Integer(string="Echelle", required=False, tracking=True)
+    echelle_compute = fields.Integer(string="Calcul de l'Echelle", required=False,tracking=True)
+    # val_compute = fields.Integer(string="valeur l'Echelle",  required=False, default='0', )
+    echelle = fields.Integer(string="Echelle", required=False, default='1', tracking=True) #, compute='_compute_echelle'
     paiement = fields.Selection([
         ('Cash', 'Cash'),
         ('Bank', 'Bank')], string='Mode de paiement', groups="hr.group_hr_user", tracking=True)
@@ -55,7 +56,7 @@ class HrEmployee(models.Model):
     seniority_month = fields.Integer(string="Mois d'Anciennetés", compute='_compute_seniority_month')
     seniority_days = fields.Integer(string="Jours d'Anciennetés", compute='_compute_seniority_days')
     Approvers_echelle = fields.Many2one('hr.employee', string='Echelle', tracking=True,
-                                        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+                                 domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     @api.depends('echlon')
     def _compute_categorie(self):
@@ -109,37 +110,51 @@ class HrEmployee(models.Model):
             else:
                 rec.seniority_days = 0
 
-    @api.depends('first_contract_date')
-    def _compute_seniority_days(self):
-        for rec in self:
-            today = date.today()
-            if rec.first_contract_date:
-                rec.seniority_days = int(((today - rec.first_contract_date).days - (rec.seniority_year * 365.245) - (
-                            rec.seniority_month * (365.245 / 12))))
-                rec.seniority_days = rec.seniority_days  # - (rec.seniority_year * 12)
-            else:
-                rec.seniority_days = 0
-
     def _compute_echellee(self):
+        print("yessss")
         empl = self.env['hr.employee'].search([])
         for record in empl:
-            echel = record.echelle_compute
-            print("echel", echel)
+            print("record")
+
+            echel=record.echelle_compute
+            print("echel",echel)
             print("record.echelle_compute1", record.echelle_compute)
 
             if record.first_contract_date is not False:
                 print("record.echelle_compute2", record.echelle_compute)
-                y = 0
-                f = (date.today() - record.first_contract_date).days
-                print("number of days", f)
-                y = ((f / 365.245) / 2)
-                record.echelle_compute = int(y) + 1
+                y=0
+                f=(date.today() - record.first_contract_date).days
+                print("number of days",f)
+                y=((f/365.245)/2)
+                record.echelle_compute = int(y)+1
                 # record.val_compute = int(y)+1
             else:
                 record.echelle_compute = 0
-            print("record.echelle_compute3", record.echelle_compute)
+            print("record.echelle_compute3",record.echelle_compute)
             if echel != record.echelle_compute:
                 record.onchange_echellee()
+
+
+    # @api.depends('first_contract_date')
+    # def _compute_echelle(self):
+    #     for record in self:
+    #         echel=record.echelle_compute
+    #         print("echel",echel)
+    #         print("record.echelle_compute1", record.echelle_compute)
+    #
+    #         if record.first_contract_date is not False:
+    #             print("record.echelle_compute2", record.echelle_compute)
+    #             y=0
+    #             f=(date.today() - record.first_contract_date).days
+    #             print("number of days",f)
+    #             y=((f/365.245)/2)
+    #             record.echelle_compute = int(y)+1
+    #             # record.val_compute = int(y)+1
+    #         else:
+    #             record.echelle_compute = 0
+    #         print("record.echelle_compute3",record.echelle_compute)
+    #         if echel != record.echelle_compute:
+    #             record.onchange_echellee()
 
     def onchange_echellee(self):
         employee = self.env['hr.employee'].search([('name','=',self.name)])
@@ -164,8 +179,6 @@ class HrEmployee(models.Model):
                                              'notification_ids': notification_ids,
                                              'res_id': odoobot.id,
                                              })
-
-
 
     def _compute_payslip_count(self):
         for employee in self:

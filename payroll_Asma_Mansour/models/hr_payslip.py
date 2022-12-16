@@ -25,7 +25,19 @@ class HrPayslip(models.Model):
     year_date_from = fields.Char(string="Year Date From", compute="_compute_month_and_year_date_from")
     month_date_to = fields.Char(string="Mois de paie", compute="_compute_month_and_year_date_to")
     year_date_to = fields.Char(string="Year Date To", compute="_compute_month_and_year_date_to")
-    stc = fields.Boolean(string="STC", default=False)
+    stc = fields.Boolean(string="STC",default=False)
+    paie_par_jour= fields.Boolean(string="Paie par jour",default=False)
+    nb_jours_ouvrable=fields.Integer(string='Jours ouvrable', compute="_compute_jours_ouvrable")
+    hour_semaine = fields.Float(string='Hour/Semaine', related="contract_id.resource_calendar_id.hours_per_week")
+
+
+    def _compute_jours_ouvrable(self):
+        for rec in self:
+            if rec.hour_semaine == 48.00:
+                rec.nb_jours_ouvrable =26
+            else:
+                rec.nb_jours_ouvrable = 22
+
 
     @api.depends('date_from')
     def _compute_month_and_year_date_from(self):

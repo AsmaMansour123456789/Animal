@@ -9,8 +9,7 @@ from . import rules_form
 from . import company
 from . import hr_contract_history
 from . import hr_payroll_report
-# from . import hr_department
-# from . import hr_departure_reason
+# from . import quotation
 # from . import hr_job
 # from . import hr_plan
 # from . import hr_work_location

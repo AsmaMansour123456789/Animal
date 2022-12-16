@@ -17,8 +17,12 @@
                 <div class="o_row" name="Mois de paie">
                     <field name="month_date_to"/>
                     <field name="year_date_to"/>
+
                 </div>
+                <field name="nb_jours_ouvrable"/>
                 <field name="stc"/>
+                <field name="paie_par_jour"/>
+                <field name="hour_semaine"/>
                 <field name="working_days" />
                 <field name="jour_de_repos_1"/>
                 <field name="jour_de_repos_2"/>

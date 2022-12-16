@@ -46,6 +46,23 @@ class HrRules(models.Model):
             except Exception as e:
                 self._raise_error(localdict, _("Wrong percentage base or quantity defined for:"), e)
 
+        # if self.amount_base:
+        #     try:
+        #         return (float(safe_eval(self.amount_base, localdict)),float(safe_eval(self.quantity, localdict)),
+        #                 self.amount_percentage or 0.0)
+        #     except Exception as e:
+        #         self._raise_error(localdict, _("Wrong percentage base or quantity defined for:"), e)
+        #         # rec.base = float(safe_eval(self.amount_base, localdict))
+        #
+        # print('amount', self.amount_base)
+        # if self.amount_base:
+        #     try:
+        #         return (float(safe_eval(self.amount_base, localdict)), float(safe_eval(self.quantity, localdict)),
+        #                 self.base or 0.0)
+        #     except Exception as e:
+        #         self._raise_error(localdict, _("Wrong percentage base or quantity defined for:"), e)
+        #         # rec.base = float(safe_eval(self.amount_base, localdict))
+        #     print("base", self.Base)
 
         else:  # python code
             try:

@@ -93,8 +93,9 @@
                             </td>
                             <td>
                                 <strong>Solde de congés: </strong>
-                                    <span t-if="o.stc == False" t-field="o.employee_id.leave_balance"/>
-                                    <span t-if="o.stc == True" >0</span>
+<!--                                <span t-field="o.employee_id.allocation_used_display"/>/<span t-field="o.employee_id.allocation_display"/>-->
+                                <span t-if="o.stc == False" t-field="o.employee_id.leave_balance"/>
+                                <span t-if="o.stc == True" >0</span>
                             </td>
                         </tr>
                     </tr>
@@ -123,7 +124,7 @@
                                     <td>
                                                  <span t-if="line.salary_rule_id.nombre_des_heures == True"
                                                          t-esc="line.amount"
-                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                                  t-options='{"widget": "integer"}'/>
                                     </td>
                                     <td>
                                             <span t-if="line.salary_rule_id.remuneration == True"
@@ -136,7 +137,7 @@
                                               t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                 </tr>
-                            </tbody>
+                    </tbody>
                 </table>
             </xpath>
 <!--            <xpath expr="//div/table[3]" position ="replace">-->

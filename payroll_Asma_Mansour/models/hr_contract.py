@@ -40,7 +40,8 @@ class HrContract(models.Model):
         ],
         string="Jour de repos 2", default='', tracking=True)
     employee_id = fields.Many2one("hr.employee")
+
     salaire_de_base = fields.Char(string='Salaire de base selon la convention', related='employee_id.salaire_de_base')
-    prime = fields.Monetary(string='Prime complémentaire', default=False, help="Employee's monthly prime.",tracking=True)
-    net = fields.Monetary(string='Salaire Net', default=False, help="Employee's monthly net salary.",tracking=True)
+    prime = fields.Monetary(string='Prime complémentaire', default=False, help="Employee's monthly prime.")
+    net = fields.Monetary(string='Salaire Net', default=False, help="Employee's monthly net salary.")
     # type_id = fields.Selection(related='employee_id.categorie')

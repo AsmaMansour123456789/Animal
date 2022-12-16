@@ -127,6 +127,16 @@ class HrPayrollReport(models.Model):
                 CASE WHEN wd.id = min_id.min_line THEN plca.total ELSE 0 END as acc_trv
                 """
 
+# """,
+#
+#                 CASE WHEN wd.id = min_id.min_line THEN plc.total ELSE 0 END as nb_jours_travailles
+#                 ,
+#
+#
+
+
+
+
 
     def _from(self):
         super(HrPayrollReport, self)._from()
@@ -166,6 +176,18 @@ class HrPayrollReport(models.Model):
                 left join hr_payslip_line plca on (plca.slip_id = p.id and plca.code = 'ACCIDENT')
                 left join hr_contract c on (p.contract_id = c.id)"""
 
+
+
+#
+# """
+#
+#                 left join hr_payslip_line plc on (plc.slip_id = p.id and plc.code = 'NTRV')
+#
+#
+#
+
+#
+# """
     def _group_by(self):
         return """GROUP BY
             e.id,
